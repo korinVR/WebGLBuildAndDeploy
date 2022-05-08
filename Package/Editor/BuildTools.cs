@@ -47,6 +47,19 @@ namespace FrameSynthesis.WebGLToolkit.Editor
                 Arguments = "start --server --watch --https --port=1000"
             });
         }
+
+        [MenuItem("WebGL/Deploy to Amazon S3")]
+        public static void DeployToS3()
+        {
+            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-buildtools/pyscripts/deploy_to_amazon_s3.py");
+            
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = pyPath
+            });
+            process?.WaitForExit();
+        }
         
         static string[] ScenePaths => EditorBuildSettings.scenes
             .Where(scene => scene.enabled)
