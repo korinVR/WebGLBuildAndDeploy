@@ -6,11 +6,11 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace FrameSynthesis.WebGLToolkit.Editor
+namespace FrameSynthesis.WebGLBuildTools.Editor
 {
     public class BuildTools
     {
-        const string BuildPath = "dist\\WebGL";
+        const string BuildPath = "dist/WebGL";
 
         [MenuItem("WebGL/Build (Development) &b", priority = 1)]
         public static void BuildDevelopment()
@@ -18,26 +18,8 @@ namespace FrameSynthesis.WebGLToolkit.Editor
             Build(BuildPath, WebGLCompressionFormat.Disabled, BuildOptions.Development);
         }
 
-        [MenuItem("WebGL/Build (Gzip)", priority = 2)]
-        public static void BuildGzip()
-        {
-            Build(BuildPath, WebGLCompressionFormat.Gzip, BuildOptions.None);
-        }
-
-        [MenuItem("WebGL/Build (Brotli)", priority = 3)]
-        public static void BuildBrotli()
-        {
-            Build(BuildPath, WebGLCompressionFormat.Brotli, BuildOptions.None);
-        }
-
-        [MenuItem("WebGL/Open Build Folder", priority = 4)]
-        public static void OpenBuildFolder()
-        {
-            Process.Start(Path.Combine(Application.dataPath, "..", BuildPath));
-        }
-
         // Requires Browsersync installed (https://browsersync.io/)
-        [MenuItem("WebGL/Start Local HTTPS Server", priority = 5)]
+        [MenuItem("WebGL/Start Local HTTPS Server", priority = 2)]
         public static void StartLocalTestServer()
         {
             Process.Start(new ProcessStartInfo
@@ -48,19 +30,27 @@ namespace FrameSynthesis.WebGLToolkit.Editor
             });
         }
 
-        [MenuItem("WebGL/Deploy to Amazon S3")]
-        public static void DeployToS3()
+        [MenuItem("WebGL/Open Build Folder", priority = 3)]
+        public static void OpenBuildFolder()
         {
-            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-buildtools/pyscripts/deploy_to_amazon_s3.py");
-            
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = "python",
-                Arguments = pyPath
-            });
-            process?.WaitForExit();
+            Process.Start(Path.Combine(Application.dataPath, "..", BuildPath));
         }
-        
+
+        [MenuItem("WebGL/Build and Deploy to Amazon S3 (Gzip)", priority = 101)]
+        public static void BuildAndDeployWithGzipCompressed()
+        {
+            
+            Build(BuildPath, WebGLCompressionFormat.Gzip, BuildOptions.None);
+            DeployToS3();
+        }
+
+        [MenuItem("WebGL/Build and Deploy to Amazon S3 (Brotli)", priority = 102)]
+        public static void BuildAndDeployWithBrotliCompressed()
+        {
+            Build(BuildPath, WebGLCompressionFormat.Brotli, BuildOptions.None);
+            DeployToS3();
+        }
+
         static string[] ScenePaths => EditorBuildSettings.scenes
             .Where(scene => scene.enabled)
             .Select(scene => scene.path).ToArray();
@@ -96,6 +86,45 @@ namespace FrameSynthesis.WebGLToolkit.Editor
             Debug.Log($"Data size: {dataSize / 1024} KB");
             
             Unity.BuildReportInspector.BuildReportInspector.OpenLastBuild();
+        }
+        
+        [MenuItem("WebGL/Deploy to Amazon S3", priority = 103)]
+        public static void DeployToS3()
+        {
+            DeploySettings deploySettings;
+            
+            try
+            {
+                var guid = AssetDatabase.FindAssets("t:" + typeof(DeploySettings).FullName).Single();
+                deploySettings = AssetDatabase.LoadAssetAtPath<DeploySettings>(AssetDatabase.GUIDToAssetPath(guid));
+            }
+            catch (InvalidOperationException)
+            {
+                Debug.LogError("DeploySettings object is required to deploy.");
+                return;
+            }
+
+            if (!deploySettings.S3URI.StartsWith("s3://"))
+            {
+                Debug.LogError("S3URI should starts with S3://.");
+                return;
+            }
+
+            var s3Uri = deploySettings.S3URI;
+            if (deploySettings.AddTimestamp)
+            {
+                s3Uri += "/" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            }
+
+            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-buildtools/pyscripts/deploy_to_amazon_s3.py");
+            var process = Process.Start(new ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = $"{pyPath} ./{BuildPath} {s3Uri}"
+            });
+            process?.WaitForExit();
+
+            Process.Start(s3Uri.Replace("s3://", "https://"));
         }
     }
 }

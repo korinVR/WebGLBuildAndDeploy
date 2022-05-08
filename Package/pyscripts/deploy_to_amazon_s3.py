@@ -1,18 +1,16 @@
 import os
+import sys
 import datetime
-import webbrowser
 
-timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
+args = sys.argv
+argc = len(args)
 
-src = './dist/WebGL'
-uri = f'korinvr.com/bin/WebGLBuildToolsTest/{timestamp}/'
+if argc < 2:
+    print(f'Usage: {args[0]} [S3URI]')
+    quit()
 
-s3uri = 's3://' + uri
-
-print(os.getcwd())
-
-# input('Hello, Python!')
-# quit()
+src = args[1]
+s3uri = args[2]
 
 print('Uploading uncompressed files...')
 os.system(f'aws s3 cp --region ap-northeast-1 {src} {s3uri} --recursive --exclude "*.br" --exclude "*.gz"')
@@ -24,5 +22,3 @@ os.system(f'aws s3 cp --region ap-northeast-1 {src} {s3uri} --recursive --exclud
 print('Uploading Gzip compressed files...')
 os.system(f'aws s3 cp --region ap-northeast-1 {src} {s3uri} --recursive --exclude "*" --include "*.gz" --content-encoding gzip')
 os.system(f'aws s3 cp --region ap-northeast-1 {src} {s3uri} --recursive --exclude "*" --include "*.wasm.gz" --content-encoding gzip --content-type "application/wasm"')
-
-webbrowser.open('https://' + uri)
