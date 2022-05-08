@@ -1,0 +1,21 @@
+{
+    "name": "com.framesynthesis.webgl-buildtools.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:df670ad6a4a8443cac276c827361912c",
+        "GUID:886b9d414587848d69561e2430a6ed6a",
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
+        "GUID:2bafac87e7f4b9b418d9448d219b01ab"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

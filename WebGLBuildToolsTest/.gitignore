@@ -1,0 +1,25 @@
+# Unity
+/Library
+/Logs
+/Recordings
+/Temp
+/UserSettings
+/ProjectSettings/AndroidLogcatSettings.asset
+
+# Visual Studio
+/.vs
+/*.csproj
+/*.sln
+/obj
+/.vsconfig
+
+# Visual Studio Code
+/.vscode
+
+# Rider
+/.idea
+
+# Build
+/dist
+/Assets/BuildReports
+/Assets/BuildReports.meta
