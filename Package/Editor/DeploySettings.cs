@@ -2,7 +2,7 @@
 
 namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 {
-    [CreateAssetMenu(menuName = "WebGL Build Tools/Deploy Settings", fileName = "WebGLDeploySettings")]
+    [CreateAssetMenu(menuName = "WebGL Build and Deploy/Deploy Settings", fileName = "WebGLDeploySettings")]
     public class DeploySettings : ScriptableObject
     {
         public string Region;
