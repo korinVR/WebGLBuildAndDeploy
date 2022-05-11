@@ -104,13 +104,20 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
                 return;
             }
 
-            if (!deploySettings.S3URI.StartsWith("s3://"))
+            var region = deploySettings.Region;
+            var s3Uri = deploySettings.S3URI;
+            
+            if (string.IsNullOrEmpty(region))
             {
-                Debug.LogError("S3URI should starts with S3://.");
+                Debug.LogError("DeploySettings: Region should be set.");
+                return;
+            }
+            if (!s3Uri.StartsWith("s3://"))
+            {
+                Debug.LogError("DeploySettings: S3URI should start with S3://.");
                 return;
             }
 
-            var s3Uri = deploySettings.S3URI;
             if (deploySettings.AddTimestamp)
             {
                 s3Uri += "/" + DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -120,7 +127,7 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",
-                Arguments = $"{pyPath} ./{BuildPath} {s3Uri}"
+                Arguments = $"{pyPath} {region} ./{BuildPath} {s3Uri}"
             });
             process?.WaitForExit();
 

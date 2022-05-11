@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655767a2e4164035ac13ce559ef4c5db, type: 3}
   m_Name: WebGLDeploySettings
   m_EditorClassIdentifier: 
+  Region: ap-northeast-1
   S3URI: s3://korinvr.com/bin/WebGLBuildToolsTest
   AddTimestamp: 1
