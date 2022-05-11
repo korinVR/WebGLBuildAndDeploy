@@ -1,15 +1,15 @@
 # Unity WebGL Build and Deploy
 
-This is a Unity package to simplify my WebGL build and deployment flow. Only Amazon S3 is supported.
+This is a Unity package to simplify my WebGL build-and-deploy flow. Only Amazon S3 is supported for deployment.
 
-Attention: This utility is only developed for me and will not be useful for everyone. Modify it if needed.  
+Attention: This utility is only designed for me and has many dependencies, and will not be useful for everyone. Use it just as a reference!
 Attention: It might not work on macOS (I use Windows).
 
 ## Requirements
 
 - Python 3
 - AWS CLI
-- [Browsersync](https://browsersync.io/) (for Start Local HTTPS Server)
+- [Browsersync](https://browsersync.io/) (for "Start Local HTTPS Server")
 
 ## Installation
 
@@ -19,6 +19,8 @@ Attention: It might not work on macOS (I use Windows).
 
 ## Usage
 
-In the project window, run "Create -> WebGL Build Tools -> Deploy Settings," and set your S3 region and URI. Now you can use the "WebGL" menu for build and deploy. Enable "Add Timestamp" if you want to add a timestamp to the destination folder.
+In the project window, run "Create -> WebGL Build Tools -> Deploy Settings," and set your S3 region and URI. Enable "Add Timestamp" if you want to add a timestamp to the destination folder.
+
+Now you can build and deploy with the "WebGL" menu. When a build is finished, the .wasm and .data size will be reported and [Build Report Inspector](https://github.com/Unity-Technologies/BuildReportInspector) will automatically open.
 
 Please see the WebGLBuildAndDeploy project as an example.
