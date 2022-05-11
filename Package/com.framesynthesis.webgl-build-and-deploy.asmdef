@@ -1,5 +1,5 @@
 {
-    "name": "com.framesynthesis.webgl-buildtools",
+    "name": "com.framesynthesis.webgl-build-and-deploy",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

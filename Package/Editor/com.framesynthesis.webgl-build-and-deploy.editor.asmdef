@@ -1,5 +1,5 @@
 {
-    "name": "com.framesynthesis.webgl-buildtools.editor",
+    "name": "com.framesynthesis.webgl-build-and-deploy.editor",
     "rootNamespace": "",
     "references": [
         "GUID:df670ad6a4a8443cac276c827361912c",

@@ -1,8 +1,8 @@
-# WebGL Build Tools
+# Unity WebGL Build and Deploy
 
 This is a Unity package to simplify my WebGL build and deployment flow. Only Amazon S3 is supported.
 
-Attention: This tool is only developed for me and will not be useful for everyone. Modify it if needed.  
+Attention: This utility is only developed for me and will not be useful for everyone. Modify it if needed.  
 Attention: It might not work on macOS (I use Windows).
 
 ## Requirements
@@ -15,10 +15,10 @@ Attention: It might not work on macOS (I use Windows).
 
 - Open Unity Package Manager
 - Open "Add package from git URL..."
-- Add https://github.com/korinVR/WebGLBuildTools.git?path=Package
+- Add https://github.com/korinVR/WebGLBuildAndDeploy.git?path=Package
 
 ## Usage
 
-In the project window, run "Create -> WebGL Build Tools -> Deploy Settings," and set S3 region and URI. Now you can use the "WebGL" menu for build and deploy. Enable "Add Timestamp" if you want to add a timestamp to the destination folder.
+In the project window, run "Create -> WebGL Build Tools -> Deploy Settings," and set your S3 region and URI. Now you can use the "WebGL" menu for build and deploy. Enable "Add Timestamp" if you want to add a timestamp to the destination folder.
 
-Please see WebGLBuildToolTest project as an example.
+Please see the WebGLBuildAndDeploy project as an example.

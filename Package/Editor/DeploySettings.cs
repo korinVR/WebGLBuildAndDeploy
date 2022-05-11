@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace FrameSynthesis.WebGLBuildTools.Editor
+namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 {
     [CreateAssetMenu(menuName = "WebGL Build Tools/Deploy Settings", fileName = "WebGLDeploySettings")]
     public class DeploySettings : ScriptableObject

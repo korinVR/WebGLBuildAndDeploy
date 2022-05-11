@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
-namespace FrameSynthesis.WebGLBuildTools.Editor
+namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 {
     public class BuildTools
     {
@@ -125,8 +125,7 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
                 s3Uri += "/" + DateTime.Now.ToString("yyyyMMddHHmmss");
             }
 
-            // Call python script.
-            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-buildtools/pyscripts/deploy_to_amazon_s3.py");
+            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-build-and-deploy/pyscripts/deploy_to_amazon_s3.py");
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",

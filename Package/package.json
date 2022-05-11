@@ -1,16 +1,16 @@
 {
-  "name": "com.framesynthesis.webgl-buildtools",
+  "name": "com.framesynthesis.webgl-build-and-deploy",
   "version": "0.0.1",
-  "displayName": "WebGL Build Tools",
-  "description": "Build tools for Unity WebGL platform",
+  "displayName": "WebGL Build and Deploy",
+  "description": "Build and deployment utility for Unity WebGL platform",
   "unity": "2021.3",
-  "documentationUrl": "https://github.com/korinVR/WebGLBuildTools",
+  "documentationUrl": "https://github.com/korinVR/WebGLBuildAndDeploy",
   "changelogUrl": "",
   "licensesUrl": "",
   "author": {
     "name": "Katsuomi Kobayashi",
     "email": "katsuomi.kobayashi@gmail.com",
-    "url": "https://github.com/korinVR"
+    "url": "https://github.com/korinVR_en"
   },
   "dependencies": {
     "com.unity.build-report-inspector": "0.2.2-preview"

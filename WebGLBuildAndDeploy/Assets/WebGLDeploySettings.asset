@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WebGLDeploySettings
   m_EditorClassIdentifier: 
   Region: ap-northeast-1
-  S3URI: s3://korinvr.com/bin/WebGLBuildToolsTest
+  S3URI: s3://korinvr.com/bin/WebGLBuildAndDeploy
   AddTimestamp: 1

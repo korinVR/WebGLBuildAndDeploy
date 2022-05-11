@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.framesynthesis.webgl-buildtools": {
+    "com.framesynthesis.webgl-build-and-deploy": {
       "version": "file:../../Package/",
       "depth": 0,
       "source": "local",
