@@ -10,12 +10,14 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
 {
     public class BuildTools
     {
-        const string BuildPath = "dist/WebGL";
-
+        static string BasePath => Path.Combine("dist", "WebGL");
+        static string PackageName => PlayerSettings.applicationIdentifier.Split('.').Last();
+        
         [MenuItem("WebGL/Build (Development) &b", priority = 1)]
         public static void BuildDevelopment()
         {
-            Build(BuildPath, WebGLCompressionFormat.Disabled, BuildOptions.Development);
+            var path = Path.Combine(BasePath, "Development", PackageName); 
+            Build(path, WebGLCompressionFormat.Disabled, BuildOptions.Development);
         }
 
         // Requires Browsersync installed (https://browsersync.io/)
@@ -24,7 +26,7 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
         {
             Process.Start(new ProcessStartInfo
             {
-                WorkingDirectory = BuildPath,
+                WorkingDirectory = Path.Combine(BasePath, "Development", PackageName),
                 FileName = "browser-sync",
                 Arguments = "start --server --watch --https --port=1000"
             });
@@ -33,22 +35,23 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
         [MenuItem("WebGL/Open Build Folder", priority = 3)]
         public static void OpenBuildFolder()
         {
-            Process.Start(Path.Combine(Application.dataPath, "..", BuildPath));
+            Process.Start(Path.Combine(Application.dataPath, "..", BasePath));
         }
 
         [MenuItem("WebGL/Build and Deploy to Amazon S3 (Gzip)", priority = 101)]
         public static void BuildAndDeployWithGzipCompressed()
         {
-            
-            Build(BuildPath, WebGLCompressionFormat.Gzip, BuildOptions.None);
-            DeployToS3();
+            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
+            DeployToS3(path);
         }
 
         [MenuItem("WebGL/Build and Deploy to Amazon S3 (Brotli)", priority = 102)]
         public static void BuildAndDeployWithBrotliCompressed()
         {
-            Build(BuildPath, WebGLCompressionFormat.Brotli, BuildOptions.None);
-            DeployToS3();
+            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
+            DeployToS3(path);
         }
 
         static string[] ScenePaths => EditorBuildSettings.scenes
@@ -76,10 +79,10 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
             PlayerSettings.WebGL.compressionFormat = prevCompressionFormat;
             PlayerSettings.WebGL.decompressionFallback = prevDecompressionFallback;
 
-            var wasmFile = new FileInfo(Path.Combine(executablePath, "Build", $"WebGL.wasm{extension}"));
+            var wasmFile = new FileInfo(Path.Combine(executablePath, "Build", $"{PackageName}.wasm{extension}"));
             var wasmSize = wasmFile.Length;
 
-            var dataFile = new FileInfo(Path.Combine(executablePath, "Build", $"WebGL.data{extension}"));
+            var dataFile = new FileInfo(Path.Combine(executablePath, "Build", $"{PackageName}.data{extension}"));
             var dataSize = dataFile.Length;
 
             Debug.Log($"WASM size: {wasmSize / 1024} KB");
@@ -88,8 +91,7 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
             Unity.BuildReportInspector.BuildReportInspector.OpenLastBuild();
         }
         
-        [MenuItem("WebGL/Deploy to Amazon S3", priority = 103)]
-        public static void DeployToS3()
+        public static void DeployToS3(string path)
         {
             DeploySettings deploySettings;
             
@@ -123,11 +125,12 @@ namespace FrameSynthesis.WebGLBuildTools.Editor
                 s3Uri += "/" + DateTime.Now.ToString("yyyyMMddHHmmss");
             }
 
+            // Call python script.
             var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-buildtools/pyscripts/deploy_to_amazon_s3.py");
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",
-                Arguments = $"{pyPath} {region} ./{BuildPath} {s3Uri}"
+                Arguments = $"{pyPath} {region} {path} {s3Uri}"
             });
             process?.WaitForExit();
 
