@@ -109,6 +109,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             var profile = deploySettings.Profile;
             var region = deploySettings.Region;
             var s3Uri = deploySettings.S3URI;
+            var url = deploySettings.URL;
 
             if (string.IsNullOrEmpty(profile))
             {
@@ -128,7 +129,9 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 
             if (deploySettings.AddTimestamp)
             {
-                s3Uri += "/" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                var timestamp = DateTime.Now.ToString("yyyyMMddHHmmss");
+                s3Uri += "/" + timestamp;
+                url += "/" + timestamp;
             }
 
             var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-build-and-deploy/pyscripts/deploy_to_amazon_s3.py");
@@ -139,7 +142,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             });
             process?.WaitForExit();
 
-            Process.Start(s3Uri.Replace("s3://", "https://"));
+            Process.Start(url);
         }
     }
 }

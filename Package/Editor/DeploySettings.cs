@@ -8,6 +8,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         public string Profile;
         public string Region;
         public string S3URI;
+        public string URL;
         public bool AddTimestamp;
     }
 }
