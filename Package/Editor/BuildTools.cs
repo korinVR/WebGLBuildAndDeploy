@@ -106,8 +106,14 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
                 return;
             }
 
+            var profile = deploySettings.Profile;
             var region = deploySettings.Region;
             var s3Uri = deploySettings.S3URI;
+
+            if (string.IsNullOrEmpty(profile))
+            {
+                profile = "default";
+            }
             
             if (string.IsNullOrEmpty(region))
             {
@@ -129,7 +135,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",
-                Arguments = $"{pyPath} {region} {path} {s3Uri}"
+                Arguments = $"{pyPath} {profile} {region} {path} {s3Uri}"
             });
             process?.WaitForExit();
 
