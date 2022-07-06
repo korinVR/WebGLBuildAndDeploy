@@ -1,6 +1,6 @@
 {
   "name": "com.framesynthesis.webgl-build-and-deploy",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "displayName": "WebGL Build and Deploy",
   "description": "Build and deployment utility for Unity WebGL platform",
   "unity": "2021.3",
@@ -8,7 +8,7 @@
   "changelogUrl": "",
   "licensesUrl": "",
   "author": {
-    "name": "Katsuomi Kobayashi",
+    "name": "korinVR",
     "email": "katsuomi.kobayashi@gmail.com",
     "url": "https://github.com/korinVR_en"
   },
