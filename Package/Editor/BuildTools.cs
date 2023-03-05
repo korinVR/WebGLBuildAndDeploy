@@ -38,7 +38,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             Process.Start(Path.Combine(Application.dataPath, "..", BasePath));
         }
 
-        [MenuItem("WebGL/Build and Deploy to Amazon S3 (Gzip)", priority = 101)]
+        [MenuItem("WebGL/Build and Deploy (Gzip)", priority = 101)]
         public static void BuildAndDeployWithGzipCompressed()
         {
             var path = Path.Combine(BasePath, "Gzip", PackageName);
@@ -46,12 +46,30 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             DeployToS3(path);
         }
 
-        [MenuItem("WebGL/Build and Deploy to Amazon S3 (Brotli)", priority = 102)]
+        [MenuItem("WebGL/Build and Deploy (Brotli)", priority = 102)]
         public static void BuildAndDeployWithBrotliCompressed()
         {
             var path = Path.Combine(BasePath, "Brotli", PackageName);
             Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
             DeployToS3(path);
+        }
+
+        [MenuItem("WebGL/Build and Deploy and Open (Gzip)", priority = 201)]
+        public static void BuildAndDeployAndOpenWithGzipCompressed()
+        {
+            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
+            var url = DeployToS3(path);
+            Process.Start(url);
+        }
+
+        [MenuItem("WebGL/Build and Deploy and Open (Brotli)", priority = 202)]
+        public static void BuildAndDeployAndOpenWithBrotliCompressed()
+        {
+            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
+            var url = DeployToS3(path);
+            Process.Start(url);
         }
 
         static string[] ScenePaths => EditorBuildSettings.scenes
@@ -91,7 +109,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             Unity.BuildReportInspector.BuildReportInspector.OpenLastBuild();
         }
         
-        public static void DeployToS3(string path)
+        public static string DeployToS3(string buildPath)
         {
             DeploySettings deploySettings;
             
@@ -102,8 +120,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             }
             catch (InvalidOperationException)
             {
-                Debug.LogError("DeploySettings object is required to deploy.");
-                return;
+                throw new Exception("DeploySettings object is required to deploy.");
             }
 
             var profile = deploySettings.Profile;
@@ -118,13 +135,11 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             
             if (string.IsNullOrEmpty(region))
             {
-                Debug.LogError("DeploySettings: Region should be set.");
-                return;
+                throw new Exception("DeploySettings: Region should be set.");
             }
             if (!s3Uri.StartsWith("s3://"))
             {
-                Debug.LogError("DeploySettings: S3URI should start with S3://.");
-                return;
+                throw new Exception("DeploySettings: S3URI should start with S3://.");
             }
 
             if (deploySettings.AddTimestamp)
@@ -138,11 +153,14 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",
-                Arguments = $"{pyPath} {profile} {region} {path} {s3Uri}"
+                Arguments = $"{pyPath} {profile} {region} {buildPath} {s3Uri}"
             });
             process?.WaitForExit();
 
-            Process.Start(url);
+            // Output URL text for GitHub Actions
+            File.WriteAllText(Path.Combine(BasePath, "URL.txt"), url);
+
+            return url;
         }
     }
 }
