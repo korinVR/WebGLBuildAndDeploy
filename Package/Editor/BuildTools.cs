@@ -38,7 +38,21 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             Process.Start(Path.Combine(Application.dataPath, "..", BasePath));
         }
 
-        [MenuItem("WebGL/Build and Deploy (Gzip)", priority = 101)]
+        [MenuItem("WebGL/Build (Gzip)", priority = 101)]
+        public static void BuildWithGzipCompressed()
+        {
+            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
+        }
+
+        [MenuItem("WebGL/Build (Brotli)", priority = 102)]
+        public static void BuildWithBrotliCompressed()
+        {
+            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
+        }
+
+        [MenuItem("WebGL/Build and Deploy (Gzip)", priority = 201)]
         public static void BuildAndDeployWithGzipCompressed()
         {
             var path = Path.Combine(BasePath, "Gzip", PackageName);
@@ -46,7 +60,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             DeployToS3(path);
         }
 
-        [MenuItem("WebGL/Build and Deploy (Brotli)", priority = 102)]
+        [MenuItem("WebGL/Build and Deploy (Brotli)", priority = 202)]
         public static void BuildAndDeployWithBrotliCompressed()
         {
             var path = Path.Combine(BasePath, "Brotli", PackageName);
@@ -54,7 +68,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             DeployToS3(path);
         }
 
-        [MenuItem("WebGL/Build and Deploy and Open (Gzip)", priority = 201)]
+        [MenuItem("WebGL/Build and Deploy and Open (Gzip)", priority = 301)]
         public static void BuildAndDeployAndOpenWithGzipCompressed()
         {
             var path = Path.Combine(BasePath, "Gzip", PackageName);
@@ -63,7 +77,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             Process.Start(url);
         }
 
-        [MenuItem("WebGL/Build and Deploy and Open (Brotli)", priority = 202)]
+        [MenuItem("WebGL/Build and Deploy and Open (Brotli)", priority = 302)]
         public static void BuildAndDeployAndOpenWithBrotliCompressed()
         {
             var path = Path.Combine(BasePath, "Brotli", PackageName);
