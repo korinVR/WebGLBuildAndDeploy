@@ -11,8 +11,5 @@
     "name": "korinVR",
     "email": "katsuomi.kobayashi@gmail.com",
     "url": "https://github.com/korinVR_en"
-  },
-  "dependencies": {
-    "com.unity.build-report-inspector": "0.2.2-preview"
   }
 }

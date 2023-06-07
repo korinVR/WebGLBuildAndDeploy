@@ -135,8 +135,6 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             
             // Output build size for for GitHub Actions
             File.WriteAllText(Path.Combine(BasePath, "BuildSize.txt"), buildSizeLog);
-            
-            Unity.BuildReportInspector.BuildReportInspector.OpenLastBuild();
         }
         
         public static string DeployToS3(string buildPath)

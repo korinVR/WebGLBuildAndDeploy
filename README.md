@@ -23,6 +23,6 @@ Attention: It might not work on macOS (I use Windows).
 
 In the project window, run "Create -> WebGL Build and Deploy -> Deploy Settings," and set your S3 region and URI. Enable "Add Timestamp" if you want to append a timestamp to the destination folder.
 
-Now you can build and deploy with the "WebGL" menu. When a build is finished, the .wasm and .data size will be reported and [Build Report Inspector](https://github.com/Unity-Technologies/BuildReportInspector) will automatically open. It will help build size optimization.
+Now you can build and deploy with the "WebGL" menu. When a build is finished, the .wasm and .data size will be reported. It will help build size optimization.
 
 Please see the WebGLBuildAndDeploy project as an example.
