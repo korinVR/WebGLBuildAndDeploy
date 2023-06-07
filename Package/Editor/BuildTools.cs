@@ -94,6 +94,11 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         {
             var prevCompressionFormat = PlayerSettings.WebGL.compressionFormat;
             var prevDecompressionFallback = PlayerSettings.WebGL.decompressionFallback;
+            
+#if UNITY_2022_2_OR_NEWER
+            // Runtime Speed and Disk Size is not usable at the moment due to the VERY LONG build time.
+            SetCodeOptimization(CodeOptimization.BuildTimes);
+#endif
 
             var extension = compressionFormat switch
             {
@@ -176,5 +181,19 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 
             return url;
         }
+
+#if UNITY_2022_2_OR_NEWER
+        enum CodeOptimization
+        {
+            BuildTimes,
+            RuntimeSpeed,
+            DiskSize,
+        }
+
+        static void SetCodeOptimization(CodeOptimization codeOptimization)
+        {
+            EditorUserBuildSettings.SetPlatformSettings(BuildPipeline.GetBuildTargetName(BuildTarget.WebGL), "CodeOptimization", codeOptimization.ToString());
+        }
+#endif
     }
 }
