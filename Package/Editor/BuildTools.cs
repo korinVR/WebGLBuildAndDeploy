@@ -122,8 +122,19 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             var dataFile = new FileInfo(Path.Combine(executablePath, "Build", $"{PackageName}.data{extension}"));
             var dataSize = dataFile.Length;
 
-            Debug.Log($"WASM size: {wasmSize / 1024} KB");
-            Debug.Log($"Data size: {dataSize / 1024} KB");
+            var compressionFormatString = compressionFormat switch
+            {
+                WebGLCompressionFormat.Disabled => "uncompressed",
+                WebGLCompressionFormat.Gzip => "Gzip",
+                WebGLCompressionFormat.Brotli => "Brotli",
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            
+            var buildSizeLog = $"Build Size: wasm {wasmSize / 1024} KB / data {dataSize / 1024} KB ({compressionFormatString})";
+            Debug.Log(buildSizeLog);
+            
+            // Output build size for for GitHub Actions
+            File.WriteAllText(Path.Combine(BasePath, "BuildSize.txt"), buildSizeLog);
             
             Unity.BuildReportInspector.BuildReportInspector.OpenLastBuild();
         }
