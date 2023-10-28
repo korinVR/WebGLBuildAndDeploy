@@ -11,12 +11,24 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
     public class BuildTools
     {
         static string BasePath => Path.Combine("dist", "WebGL");
-        static string PackageName => PlayerSettings.applicationIdentifier.Split('.').Last();
+        static string AppName
+        {
+            get
+            {
+                var items = PlayerSettings.applicationIdentifier.Split('.');
+                var appName = items.Last();
+                if (appName == "development")
+                {
+                    appName = items[^2];
+                }
+                return appName;
+            }
+        }
         
         [MenuItem("WebGL/Build (Development) &b", priority = 1)]
         public static void BuildDevelopment()
         {
-            var path = Path.Combine(BasePath, "Development", PackageName); 
+            var path = Path.Combine(BasePath, "Development", AppName); 
             Build(path, WebGLCompressionFormat.Disabled, BuildOptions.Development);
         }
 
@@ -26,7 +38,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         {
             Process.Start(new ProcessStartInfo
             {
-                WorkingDirectory = Path.Combine(BasePath, "Development", PackageName),
+                WorkingDirectory = Path.Combine(BasePath, "Development", AppName),
                 FileName = "browser-sync",
                 Arguments = "start --server --watch --https --port=1000"
             });
@@ -41,21 +53,21 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         [MenuItem("WebGL/Build (Gzip)", priority = 101)]
         public static void BuildWithGzipCompressed()
         {
-            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            var path = Path.Combine(BasePath, "Gzip", AppName);
             Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
         }
 
         [MenuItem("WebGL/Build (Brotli)", priority = 102)]
         public static void BuildWithBrotliCompressed()
         {
-            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            var path = Path.Combine(BasePath, "Brotli", AppName);
             Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
         }
 
         [MenuItem("WebGL/Build and Deploy (Gzip)", priority = 201)]
         public static void BuildAndDeployWithGzipCompressed()
         {
-            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            var path = Path.Combine(BasePath, "Gzip", AppName);
             Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
             DeployToS3(path);
         }
@@ -63,7 +75,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         [MenuItem("WebGL/Build and Deploy (Brotli)", priority = 202)]
         public static void BuildAndDeployWithBrotliCompressed()
         {
-            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            var path = Path.Combine(BasePath, "Brotli", AppName);
             Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
             DeployToS3(path);
         }
@@ -71,7 +83,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         [MenuItem("WebGL/Build and Deploy and Open (Gzip)", priority = 301)]
         public static void BuildAndDeployAndOpenWithGzipCompressed()
         {
-            var path = Path.Combine(BasePath, "Gzip", PackageName);
+            var path = Path.Combine(BasePath, "Gzip", AppName);
             Build(path, WebGLCompressionFormat.Gzip, BuildOptions.None);
             var url = DeployToS3(path);
             Process.Start(url);
@@ -80,7 +92,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         [MenuItem("WebGL/Build and Deploy and Open (Brotli)", priority = 302)]
         public static void BuildAndDeployAndOpenWithBrotliCompressed()
         {
-            var path = Path.Combine(BasePath, "Brotli", PackageName);
+            var path = Path.Combine(BasePath, "Brotli", AppName);
             Build(path, WebGLCompressionFormat.Brotli, BuildOptions.None);
             var url = DeployToS3(path);
             Process.Start(url);
@@ -116,10 +128,10 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             PlayerSettings.WebGL.compressionFormat = prevCompressionFormat;
             PlayerSettings.WebGL.decompressionFallback = prevDecompressionFallback;
 
-            var wasmFile = new FileInfo(Path.Combine(executablePath, "Build", $"{PackageName}.wasm{extension}"));
+            var wasmFile = new FileInfo(Path.Combine(executablePath, "Build", $"{AppName}.wasm{extension}"));
             var wasmSize = wasmFile.Length;
 
-            var dataFile = new FileInfo(Path.Combine(executablePath, "Build", $"{PackageName}.data{extension}"));
+            var dataFile = new FileInfo(Path.Combine(executablePath, "Build", $"{AppName}.data{extension}"));
             var dataSize = dataFile.Length;
 
             var compressionFormatString = compressionFormat switch
