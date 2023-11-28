@@ -3,7 +3,6 @@
 This is a Unity package to simplify my WebGL build-and-deploy flow. Only Amazon S3 is supported for deployment.
 
 Attention: This utility has many dependencies and will not be useful for everyone. Modify it, or use it just as a reference!  
-Attention: It might not work on macOS (I use Windows).
 
 ![menu](https://user-images.githubusercontent.com/882466/167887860-090ed9ee-d0c6-47ac-84b4-00b5a0ff2b87.png)
 
@@ -18,6 +17,8 @@ Attention: It might not work on macOS (I use Windows).
 - Open Unity Package Manager
 - Open "Add package from git URL..."
 - Add https://github.com/korinVR/WebGLBuildAndDeploy.git?path=Package
+
+In macOS, register the AWS CLI installation path on "Settings > WebGL Build and Deploy" because Unity can't find the path.
 
 ## Usage
 

@@ -36,12 +36,8 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         [MenuItem("WebGL/Start Local HTTPS Server", priority = 2)]
         public static void StartLocalTestServer()
         {
-            Process.Start(new ProcessStartInfo
-            {
-                WorkingDirectory = Path.Combine(BasePath, "Development", AppName),
-                FileName = "browser-sync",
-                Arguments = "start --server --watch --https --port=1000"
-            });
+            var workingDirectory = Path.Combine(Application.dataPath, "..", BasePath, "Development", AppName);
+            ProcessStarter.RunBrowsersync(workingDirectory);
         }
 
         [MenuItem("WebGL/Open Build Folder", priority = 3)]
@@ -189,13 +185,10 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
                 url += "/" + timestamp;
             }
 
-            var pyPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-build-and-deploy/pyscripts/deploy_to_amazon_s3.py");
-            var process = Process.Start(new ProcessStartInfo
-            {
-                FileName = "python",
-                Arguments = $"{pyPath} {profile} {region} {buildPath} {s3Uri}"
-            });
-            process?.WaitForExit();
+            var pythonScriptPath = Path.GetFullPath("Packages/com.framesynthesis.webgl-build-and-deploy/pyscripts/deploy_to_amazon_s3.py");
+            var arguments = $"{profile} {region} {buildPath} {s3Uri}";
+            var workingDirectory =　Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
+            ProcessStarter.CallPython(pythonScriptPath, workingDirectory, arguments);
 
             // Output URL text for GitHub Actions
             File.WriteAllText(Path.Combine(BasePath, "URL.txt"), url);
