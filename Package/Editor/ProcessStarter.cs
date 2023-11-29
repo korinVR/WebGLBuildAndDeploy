@@ -10,7 +10,6 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 #if UNITY_EDITOR_WIN
             Process.Start(new ProcessStartInfo
             {
-                WorkingDirectory = Path.Combine(BasePath, "Development", AppName),
                 FileName = "browser-sync",
                 Arguments = "start --server --watch --https --port=1000"
             });
