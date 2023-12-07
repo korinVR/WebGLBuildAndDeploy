@@ -1,6 +1,6 @@
 {
   "name": "com.framesynthesis.webgl-build-and-deploy",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "displayName": "WebGL Build and Deploy",
   "description": "Build and deployment utility for Unity WebGL platform",
   "unity": "2021.3",

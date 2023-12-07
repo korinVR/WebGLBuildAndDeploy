@@ -11,7 +11,8 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             Process.Start(new ProcessStartInfo
             {
                 FileName = "browser-sync",
-                Arguments = "start --server --watch --https --port=1000"
+                Arguments = $"start --server --watch --https --port=1000",
+                WorkingDirectory = workingDirectory
             });
 #endif
 #if UNITY_EDITOR_OSX
@@ -33,7 +34,8 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             var process = Process.Start(new ProcessStartInfo
             {
                 FileName = "python",
-                Arguments = arguments
+                Arguments = $"{pythonScriptPath} {arguments}",
+                WorkingDirectory = workingDirectory
             });
             process?.WaitForExit();
 #endif
