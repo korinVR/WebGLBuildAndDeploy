@@ -43,22 +43,22 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
             // Requires AWS CLI path to call from Python on macOS
             var environmentPath = Preferences.instance.awsCliPath + ":" + Environment.GetEnvironmentVariable("PATH");
 
-            var process = Process.Start(new ProcessStartInfo
+            UnityEngine.Debug.Log($"{pythonScriptPath} {arguments}");
+            
+            var processStartInfo = new ProcessStartInfo
             {
                 FileName = "/usr/bin/python3",
                 Arguments = $"{pythonScriptPath} {arguments}",
                 UseShellExecute = false,
-                RedirectStandardError = true,
-                RedirectStandardOutput = true,
                 WorkingDirectory = workingDirectory,
                 EnvironmentVariables = { ["PATH"] = environmentPath }
-            });
-            process?.WaitForExit();
-            
-            var log = process.StandardOutput.ReadToEnd();
-            var errorLog = process.StandardError.ReadToEnd();
-            UnityEngine.Debug.Log("Log: " + log);
-            UnityEngine.Debug.Log("ErrorLog: " + errorLog);
+            };
+
+            var process = new Process();
+            process.StartInfo = processStartInfo;
+            process.Start();
+
+            process.WaitForExit();
 #endif
         }
     }
