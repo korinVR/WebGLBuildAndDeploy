@@ -147,6 +147,8 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         
         public static string DeployToS3(string buildPath)
         {
+            Debug.Log("Uploading...");
+            
             DeploySettings deploySettings;
             
             try
@@ -192,6 +194,8 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 
             // Output URL text for GitHub Actions
             File.WriteAllText(Path.Combine(BasePath, "URL.txt"), url);
+            
+            Debug.Log($"Uploaded to {url}");
 
             return url;
         }
