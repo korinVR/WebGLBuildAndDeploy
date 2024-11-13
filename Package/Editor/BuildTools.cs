@@ -10,7 +10,7 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
 {
     public class BuildTools
     {
-        static string BasePath => Path.Combine("dist", "WebGL");
+        static string BasePath => Path.Combine("Builds", "WebGL");
         static string AppName
         {
             get
