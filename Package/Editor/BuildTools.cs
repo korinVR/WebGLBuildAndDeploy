@@ -205,7 +205,9 @@ namespace FrameSynthesis.WebGLBuildAndDeploy.Editor
         {
             BuildTimes,
             RuntimeSpeed,
+            RuntimeSpeedLTO,
             DiskSize,
+            DiskSizeLTO,
         }
 
         static void SetCodeOptimization(CodeOptimization codeOptimization)
